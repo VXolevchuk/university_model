@@ -14,8 +14,6 @@ public interface LessonService {
 	public void deleteLesson(Long id);
 	public void deleteLessons(List<Long> ids);
 	
-	
-	
-	//public List<LessonDTO> getLessonsByStudentAndDate(StudentDTO student, Date date);
+	public List<LessonDTO> getTodayLessons(Date date, Long groupId);
 
 }

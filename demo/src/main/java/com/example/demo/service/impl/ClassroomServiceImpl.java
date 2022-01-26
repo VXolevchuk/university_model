@@ -3,11 +3,15 @@ package com.example.demo.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.demo.Model.Classroom;
 import com.example.demo.dto.ClassroomDTO;
 import com.example.demo.repos.ClassroomRepository;
 import com.example.demo.service.ClassroomService;
 
+@Service
 public class ClassroomServiceImpl implements ClassroomService{
 	private final ClassroomRepository classroomRepository;
 	
@@ -17,6 +21,7 @@ public class ClassroomServiceImpl implements ClassroomService{
 	}
 
 	@Override
+	@Transactional
 	public void addClassroom(ClassroomDTO classroomDTO) {
 		if(classroomRepository.existsByNumber(classroomDTO.getNumber()))
 			return;
@@ -25,6 +30,7 @@ public class ClassroomServiceImpl implements ClassroomService{
 	}
 
 	@Override
+	@Transactional
 	public void addClassrooms(List<ClassroomDTO> classroomDTOs) {
 		classroomDTOs.forEach((x) -> {
 		    if(classroomRepository.existsByNumber(x.getNumber())) {
@@ -37,6 +43,7 @@ public class ClassroomServiceImpl implements ClassroomService{
 	}
 
 	@Override
+	@Transactional
 	public void setAvailable(ClassroomDTO classroomDTO) {
 		Classroom classroom = classroomRepository.getById(classroomDTO.getId());
 		classroom.setAvailable(classroomDTO.getAvailable());
@@ -44,12 +51,14 @@ public class ClassroomServiceImpl implements ClassroomService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ClassroomDTO getClassroom(Long id) {
 		Classroom classroom = classroomRepository.getById(id);
 		return classroom.toDTO();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<ClassroomDTO> getAllClassrooms() {
 		List<Classroom> classrooms = classroomRepository.findAll();
 		List<ClassroomDTO> classroomDTOs = new ArrayList<ClassroomDTO>();
@@ -61,11 +70,13 @@ public class ClassroomServiceImpl implements ClassroomService{
 	}
 
 	@Override
+	@Transactional
 	public void deleteClassroom(Long id) {
 		classroomRepository.deleteById(id);	
 	}
 
 	@Override
+	@Transactional
 	public void deleteClassrooms(List<Long> ids) {
 		ids.forEach((x) -> {
 			classroomRepository.deleteById(x);
